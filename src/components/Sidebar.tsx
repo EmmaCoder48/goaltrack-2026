@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const navItems = [
   {
@@ -37,15 +37,32 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  // función para cerrar sesión
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        router.push('/login');
+        router.refresh();
+      }
+    } catch (error) {
+      console.error('Error al intentar cerrar sesión:', error);
+    }
+  };
 
   return (
-    <nav className="sidebar">
+    <nav className="sidebar" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div className="sidebar-logo">
         <h1>QUINIELA</h1>
         <p>MUNDIAL 2026 ™</p>
       </div>
 
-      <div className="sidebar-nav">
+      <div className="sidebar-nav" style={{ flex: 1, overflowY: 'auto' }}>
         {navItems.map((group) => (
           <div key={group.section}>
             <div className="nav-section">{group.section}</div>
@@ -63,12 +80,37 @@ export default function Sidebar() {
         ))}
       </div>
 
-      <div className="sidebar-user">
-        <div className="user-avatar">⚽</div>
-        <div className="user-info">
-          <div className="user-name">Mundial 2026</div>
-          <div className="user-role">Sistema</div>
+      {/* boton de cerrar seseion */}
+      <div className="sidebar-user" style={{ display: 'flex', flexDirection: 'column', gap: '15px', padding: '20px', borderTop: '1px solid var(--border)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="user-avatar">⚽</div>
+          <div className="user-info">
+            <div className="user-name">Mundial 2026</div>
+            <div className="user-role">Sistema</div>
+          </div>
         </div>
+        
+        <button 
+          onClick={handleLogout}
+          className="btn" 
+          style={{ 
+            width: '100%', 
+            backgroundColor: '#ef4444', 
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '8px',
+            cursor: 'pointer',
+            padding: '8px',
+            border: 'none',
+            borderRadius: 'var(--radius)',
+            fontSize: '0.9rem',
+            fontWeight: 600
+          }}
+        >
+          <span>🚪</span> Cerrar Sesión
+        </button>
       </div>
     </nav>
   );
