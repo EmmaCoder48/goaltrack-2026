@@ -81,8 +81,6 @@ export default async function CalendarioPage() {
                         padding: '16px 20px',
                         transition: 'box-shadow 0.15s',
                       }}
-                        onMouseEnter={e => (e.currentTarget.style.boxShadow = 'var(--shadow-lg)')}
-                        onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                           <span style={{ fontSize: '0.7rem', color: 'var(--gris)', fontFamily: 'Barlow Condensed', letterSpacing: 1 }}>
